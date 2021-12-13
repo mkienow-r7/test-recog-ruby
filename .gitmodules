@@ -1,0 +1,3 @@
+[submodule "test-recog"]
+	path = test-recog
+	url = git@github.com:mkienow-r7/test-recog.git
