@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request]
+on: [workflow_dispatch, push, pull_request]
 
 jobs:
   test:
@@ -13,6 +13,41 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
+        token: ${{ secrets.MY_REPO_PAT }} # `GH_PAT` is a secret that contains your PAT
+    - name: Checkout recog content
+      uses: actions/checkout@v2
+      with:
+        path: recog-content
+        repository: mkienow-r7/test-recog
+        token: ${{ secrets.MY_REPO_PAT }} # `GH_PAT` is a secret that contains your PAT
+#    - name: Copy recog content to code root for tests
+#      #run: cp -R ./recog-content/xml .
+#      run:  |
+#        ls -lah
+#        ls -lah ../
+#        ls -lah ./recog-content
+#        cp -R ./recog-content/xml .
+    - name: Action debug output
+      run: |
+        echo "----------------------------------------------------------------------------------"
+        ls -lah
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ./test-recog/
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ./recog-content
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ../
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ../../
+        echo "----------------------------------------------------------------------------------"
+        ls -lah /home/runner/work/test-recog-ruby/
+        echo "----------------------------------------------------------------------------------"
+        ls -lah /home/runner/work/test-recog-ruby/test-recog-ruby/
+        echo "----------------------------------------------------------------------------------"
+        ls -lah /home/runner/work/test-recog-ruby/test-recog-ruby/test-recog/
+        echo "----------------------------------------------------------------------------------"
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -20,6 +55,23 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
       run: |
+        echo "----------------------------------------------------------------------------------"
+        ls -lah
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ./test-recog/
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ./recog-content
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ../
+        echo "----------------------------------------------------------------------------------"
+        ls -lah ../../
+        echo "----------------------------------------------------------------------------------"
+        ls -lah /home/runner/work/test-recog-ruby/
+        echo "----------------------------------------------------------------------------------"
+        ls -lah /home/runner/work/test-recog-ruby/test-recog-ruby/
+        echo "----------------------------------------------------------------------------------"
+        ls -lah /home/runner/work/test-recog-ruby/test-recog-ruby/test-recog/
+        echo "----------------------------------------------------------------------------------"
         bundle exec rake --version
         bundle exec rake tests
       env:
